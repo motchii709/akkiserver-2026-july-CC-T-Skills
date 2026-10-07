@@ -1,63 +1,72 @@
-# akkiserver-2026-july-CC-T-Skills
+# cc-tweaked-addons
 
-あっきーサーバー 2026年7月用です。
+Agent skills for [ComputerCraft: Tweaked](https://tweaked.cc/) (CC:T) and its
+addon mods on Minecraft 1.21.1 / NeoForge: peripheral type names and Lua methods
+backed by javap inspection of the mod jars plus official docs. No guesswork.
 
-> 検証歓迎: さまざまなモデルやエージェントでお試しいただき、間違い・不足・動かない例を見つけたら
-> Issue / PR で教えてください。寄稿も歓迎します (→ [CONTRIBUTING.md](CONTRIBUTING.md))。
+> Verification welcome: try it with different models and agents, and report
+> mistakes, gaps, or non-working examples via Issue / PR. Contributions welcome
+> (→ [CONTRIBUTING.md](CONTRIBUTING.md)). 日本語版は [README.ja.md](README.ja.md)。
 
-## スキル一覧
+## Skills
 
-| スキル | 内容 |
+| Skill | Contents |
 |---|---|
-| [cc-7m](skills/cc-7m/SKILL.md) | ルータ。Mod構成・基本パターン・パック固有制約・DSH運用への入口 |
+| [cc-tweaked-addons](skills/cc-tweaked-addons/SKILL.md) | Router: mod set, basic patterns, environment constraints, logistics recipe entry |
 
-`cc-7m` の references:
+References under `cc-tweaked-addons`:
 
-| ファイル | 内容 |
+| File | Contents |
 |---|---|
-| [create.md](skills/cc-7m/references/create.md) | Create 6.0.10 内蔵18種 (StockTicker/Requester/Frogport…)。物流の要 |
-| [cccbridge.md](skills/cc-7m/references/cccbridge.md) | CC:C Bridge 1.7.3 の5種 (scroller/source/target/animatronic/redrouter) |
-| [advanced-peripherals.md](skills/cc-7m/references/advanced-peripherals.md) | Advanced Peripherals 0.7.62b (chat_box/player_detector/…/colony_integrator) |
-| [toms.md](skills/cc-7m/references/toms.md) | Tom's Peripherals 1.3.1 (GPU/キーボード/RS多面/WDT) |
-| [misc-addons.md](skills/cc-7m/references/misc-addons.md) | Tweaked Controllers / Deep Seas / Sable / DebugBridge |
-| [m7bus-loop.md](skills/cc-7m/references/m7bus-loop.md) | DSH側運用 (m7bus中継・ccbus MCP・M7.*・NBT材料解析) |
+| [create.md](skills/cc-tweaked-addons/references/create.md) | 18 Create 6.0.10 built-ins (StockTicker/Requester/Frogport…). The logistics core |
+| [cccbridge.md](skills/cc-tweaked-addons/references/cccbridge.md) | 5 CC:C Bridge 1.7.3 types (scroller/source/target/animatronic/redrouter) |
+| [advanced-peripherals.md](skills/cc-tweaked-addons/references/advanced-peripherals.md) | Advanced Peripherals 0.7.62b (chat_box/player_detector/…/colony_integrator) |
+| [toms.md](skills/cc-tweaked-addons/references/toms.md) | Tom's Peripherals 1.3.1 (GPU/keyboard/multi-sided redstone/watchdog) |
+| [misc-addons.md](skills/cc-tweaked-addons/references/misc-addons.md) | Tweaked Controllers / Deep Seas / Sable / DebugBridge |
+| [logistics.md](skills/cc-tweaked-addons/references/logistics.md) | Logistics recipe (Schematicannon materials: stock → orders → arrival → shortfall) |
+| [types.md](skills/cc-tweaked-addons/references/types.md) | LuaLS type definitions (`types/class_set.d.lua`, vendored MIT) |
 
-## 使い方
+## Usage
 
-### Claude Code / Codex / OpenCode 等 (エージェント)
+Point your agent's skill directory at `skills/`. Load `cc-tweaked-addons/SKILL.md`
+first, then follow references as needed.
 
-`skills/` をスキルディレクトリとして読み込ませてください。まず `cc-7m/SKILL.md` を
-読み込ませ、必要に応じて references を参照させてください。
+### In-game (Minecraft)
 
-### DSH (DeepSeek Harness)
+Skills are a knowledge base, not an in-game mod. Call
+`peripheral.find("<type>")` from an in-game computer. The standard
+Schematicannon-material procedure is in
+[logistics.md](skills/cc-tweaked-addons/references/logistics.md).
 
-`~/.dsh/skills/` に `cc-7m` ディレクトリを置く (SKILL.md + references)。
-ホットリロードでカタログに出る。再起動不要。
+### Adapting to your own pack
 
-### ゲーム内 (Minecraft)
+The jar-measured versions are CC: Tweaked 1.120.0, Create 6.0.10,
+CC:C Bridge 1.7.3, Advanced Peripherals 0.7.62b, Tom's Peripherals 1.3.1,
+Tweaked Controllers 1.21.1-1.2.7, Deep Seas 1.1.1, Sable 1.3.4.
+If your versions differ, re-check type strings with
+`peripheral.getNames()` / `peripheral.getType()` in-game and file an issue or PR.
 
-スキルは知識ベースであり、ゲーム内 Mod ではない。使うときはゲーム内コンピュータで
-`peripheral.find("<型名>")` を呼ぶ。DSH 運用 (m7bus 経由の遠隔Lua実行) の手順は
-[m7bus-loop.md](skills/cc-7m/references/m7bus-loop.md)。
+## Verification status
 
-## 検証状態
+- [x] javap measurement: type strings and method names for Create 18, CCC Bridge 5,
+  AP 13+, Tom's 4, Tweaked Controllers, Deep Seas 3, Sable 2 APIs
+- [x] config measurement: computercraft-server.toml (http allow/deny, fuel),
+  AP peripherals.toml (chatbox/ME/RS/detector enablement), cccbridge client.toml
+- [x] Official-doc cross-check: CC:C Bridge wiki, AP 0.7 docs
+  (chat_box/player_detector/redstone_integrator)
+- [x] Multi-model review rounds (facts / Lua / readability / consistency)
+- [ ] **In-game verification on more packs — wanted.** Share model + results in issues
 
-- [x] javap 実測: Create 18種・CCC Bridge 5種・AP 13種+・Tom's 4種・
-  Tweaked Controllers・Deep Seas 3種・Sable 2 API の型文字列とメソッド名
-- [x] config 実測: computercraft-server.toml (http allow/deny・燃料)・
-  AP peripherals.toml (chatbox/ME/RS/各検出器の有効無効)・cccbridge client.toml
-- [x] 公式doc突合: CC:C Bridge wiki・AP 0.7 docs (chat_box/player_detector/redstone_integrator)
-- [ ] **多モデル検証: 実施中**。検証に使ったモデル・結果の共有は Issue で歓迎
+Known pitfalls (details in each reference):
 
-既知の落とし穴 (詳細は各 reference):
+- AP 1.21.1 type names are snake_case (`chat_box`, not legacy `chatBox`)
+- AP redstone integrator was removed in 0.7.50b; use CC:T's own redstone relay
+- CCC Bridge 1.7.3 has no `train_station`; use Create's built-in `Create_Station`
+- Requester `setRequest`: max 9 types per call, count<=256 each
+- Frogport `setConfiguration("send_recieve")` is that exact spelling (not "receive")
+- Deep Seas Hull Controller type is `oxygenator` (not "hull")
 
-- AP の 1.21.1 型名は snake_case (`chat_box`。旧 `chatBox` ではない)
-- AP の redstone integrator は 0.7.50b で削除済み。CC:T 本体の redstone relay を使う
-- CCC Bridge 1.7.3 に `train_station` は無い。列車は Create 内蔵 `Create_Station` を使う
-- Requester の `setRequest` は1回9種まで・count<=256
-- Frogport の `setConfiguration("send_recieve")` はこの綴り (receive ではない)
-- Deep Seas の Hull Controller の型名は `oxygenator` (hull ではない)
+## License
 
-## ライセンス
-
-[MIT](LICENSE)。寄稿歓迎 — [CONTRIBUTING.md](CONTRIBUTING.md)。
+[MIT](LICENSE). Contributions welcome — [CONTRIBUTING.md](CONTRIBUTING.md).
+Third-party attributions: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
