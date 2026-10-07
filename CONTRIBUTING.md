@@ -1,33 +1,38 @@
-# 寄稿ガイド
+# Contributing
 
-Issue も PR も歓迎します。初めての方でも気軽にどうぞ。
+Issues and PRs are welcome — first-timers too.
 
-## 歓迎する寄稿
+## Welcome contributions
 
-- **間違いの指摘**: 型名・メソッド名・引数形が動かない、公式ドキュメントと異なる
-- **多モデル検証の報告**: 試したモデル名・使った場面・結果 (動いた/動かない例つき歓迎)
-- **不足の補完**: 未記載のペリフェラル・イベント名・Lua 例
-- **日本語の改善**: 分かりにくい表現・誤字脱字
+- **Corrections**: a type name, method name, or arity that does not work or
+  differs from the official docs
+- **Multi-model verification reports**: model name, scenario, result
+  (working / non-working examples appreciated)
+- **Gap filling**: undocumented peripherals, event names, Lua examples
+- **Language improvements**: unclear wording, typos (English or Japanese)
 
-## やり方
+## How
 
-1. まず Issue を立てるか、直接 PR を送る (どちらでも可。迷ったら Issue から)
-2. PR の場合: `skills/cc-7m/` 以下を編集し、何をどう裏付けたか (javap / config / 公式doc URL /
-   ゲーム内実測) を PR 本文に書く
-3. 推測で書かない。裏付けのない記述は `未確認` と明記する
+1. Open an issue first, or send a PR directly (either is fine; when in doubt,
+   start with an issue).
+2. For PRs: edit under `skills/cc-tweaked-addons/` and state in the PR body how
+   you verified it (javap / config / official-doc URL / in-game test).
+3. No guesswork. Mark unverified statements `unconfirmed`.
 
-## 記述ルール
+## Writing rules
 
-- 型文字列・メソッド名は同梱 jar の javap 実測値を正とします。公式ドキュメントと
-  異なる場合は両方を記載し、どちらを優先すべきか明記する
-- 日本語で書く。英語の固有名詞 (ペリフェラル型名・メソッド名) は原文のまま
-- バージョンを書く。新規 Mod / 新バージョン対応の PR は jar 内バージョン
-  (`META-INF/neoforge.mods.toml` の `version`) を添える
-- ゲーム内・ワールド・gist に置く前提のコードには APIキー類を書かない
-  (置いてよいのは失効可能なバストークンのみ — 詳細は `m7bus-loop.md`)
-- 用語はペリフェラルに統一 (初出のみ「ペリフェラル (周辺機器)」と併記可)。
-  メソッド・ドキュメントはカタカナ表記にしない
+- Type strings and method names: the bundled jars' javap output wins. When the
+  official docs disagree, document both and say which to prefer.
+- Write in English (skill body and references). Japanese questions, issues, and
+  PRs are welcome; see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md).
+- State versions. For new mods / new-version PRs, attach the in-jar version
+  (`version` in `META-INF/neoforge.mods.toml`).
+- Never put credentials or secret tokens in code meant to live in-game
+  (keep API keys and personal tokens on the PC / agent side, never in-game).
+- The vendored `types/class_set.d.lua` is third-party licensed code — note changes
+  to it in your PR; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the
+  source and upstreaming.
 
-## ライセンス
+## License
 
-寄稿は MIT (LICENSE) の下で取り扱います。
+Contributions are handled under MIT ([LICENSE](LICENSE)).
