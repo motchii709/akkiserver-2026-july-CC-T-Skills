@@ -28,7 +28,10 @@ Issues and PRs are welcome — first-timers too.
 - State versions. For new mods / new-version PRs, attach the in-jar version
   (`version` in `META-INF/neoforge.mods.toml`).
 - Never put credentials or secret tokens in code meant to live in-game
-  (keep API keys and personal tokens on the PC / agent side, never in-game).
+  (keep API keys and personal tokens on the PC / agent side, never in-game Lua,
+  NBT storage, disks, monitors, or chat). In-game files ship with the world
+  save and rednet/modem traffic is sniffable — the game is not a vault.
+  Also never commit secrets to git or POST them via http/chat; rotate if leaked.
 - The vendored `types/class_set.d.lua` is third-party licensed code — note changes
   to it in your PR; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the
   source and upstreaming.
