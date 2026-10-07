@@ -1,9 +1,6 @@
 # akkiserver-2026-july-CC-T-Skills
 
-Minecraft 1.21.1 / NeoForge Modpack 「7m-dshtest」用の
-[ComputerCraft: Tweaked](https://tweaked.cc/) (CC:T) スキル集。
-同梱 jar の javap 実測 + 公式ドキュメントで裏付けたペリフェラル型名・Lua メソッド表が中心。
-推測による記述はありません。
+あっきーサーバー 2026年7月用です。
 
 > 検証歓迎: さまざまなモデルやエージェントでお試しいただき、間違い・不足・動かない例を見つけたら
 > Issue / PR で教えてください。寄稿も歓迎します (→ [CONTRIBUTING.md](CONTRIBUTING.md))。
