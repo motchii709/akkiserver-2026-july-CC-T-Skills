@@ -38,9 +38,9 @@ local batch = {
   {name="minecraft:iron_ingot", count=32},
 }
 req.setRequest(table.unpack(batch))
-req.request()
--- for craftable gaps:
--- req.setCraftingRequest({name="minecraft:oak_planks", count=16}); req.request()
+req.request()  -- fires immediately from Lua; no redstone signal needed
+-- for craftable gaps (leading int count first — jar-measured signature):
+-- req.setCraftingRequest(1, {name="minecraft:oak_planks", count=16}); req.request()
 
 -- 4. Check arrival: look inside the Generated port
 local frog = peripheral.find("Create_Frogport")
