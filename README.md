@@ -6,7 +6,7 @@ backed by javap inspection of the mod jars plus official docs. No guesswork.
 
 > Verification welcome: try it with different models and agents, and report
 > mistakes, gaps, or non-working examples via Issue / PR. Contributions welcome
-> (→ [CONTRIBUTING.md](CONTRIBUTING.md)). 日本語版は [README.ja.md](README.ja.md)。
+> (→ [CONTRIBUTING.md](CONTRIBUTING.md)). Japanese version: [README.ja.md](README.ja.md).
 
 ## Skills
 
