@@ -24,19 +24,19 @@ local rx, ry, rw, rh = 1, 1, 10, 5  -- 1-based x,y plus WIDTH,HEIGHT (not corner
 g.filledRectangle(rx, ry, rw, rh, color)
 g.rectangle(rx, ry, rw, rh, color)
 g.line(rx, ry, rx + rw, ry + rh, color)  -- 1-based endpoints, color optional
-g.lineS(rx, ry, rx + rw, ry + rh, color)  -- line variant (jar-confirmed name; args TBD in-game)
+g.lineS(rx, ry, rx + rw, ry + rh, color)  -- same args as line (jar: 'expected x1,y1,x2,y2,[color]')
 g.drawText(x, y, "hello", 0xFFFFFFFF, 0xFF000000, 1, 0)
 g.drawTextSmart(x, y, "hello", 0xFFFFFFFF, 0xFF000000, false, 1, 0)
-local id = g.addNewChar("X", 8, <16 numbers of char bitmap>)
--- 3rd arg of drawChar is a NUMBER char id (jar-measured), not a string:
+local id = g.addNewChar("X", 8, ...)  -- 16 numbers of char bitmap follow the width
+-- 3rd arg of drawChar is a NUMBER char id (jar: 'expected (number x,number y,number char,...)'):
 g.drawChar(x, y, id, 0xFFFFFFFF, 0xFF000000, 1)
--- pixel data is passed as varargs (numbers), not a table:
--- g.drawBuffer(x, y, w, scale, <numbers...>)
--- images are ref objects, not names (there is no saveImage method):
-local img = g.newImage(w, h)  -- or g.decodeImage(...), g.imageFromBuffer(...)
+-- pixel data is vararg numbers (jar: 'expected (number x,number y,number w,number scale,number... data)'):
+g.drawBuffer(x, y, w, 1, 0, 1, 0, 1)
+-- images are ref objects (jar: 'expected (number x, number y, image ref)'):
+local img = g.newImage(w, h)  -- or g.decodeImage(buffer-or-numbers), g.imageFromBuffer(...)
 g.drawImage(x, y, img)
-local buf = g.newBuffer(...)  -- raw pixel buffer handle
-print(g.getUsedMemory(), g.getMaxMemory())  -- VRAM is 16 MiB total
+local buf = g.newBuffer()  -- LuaByteBuffer: write/read/free/length/available
+print(g.getUsedMemory(), g.getMaxMemory())  -- VRAM is 16 MiB total (16777216)
 -- g.setSize(n)  -- pixel scale 16..64 (rebuilds the screen buffer); g.refreshSize()
 g.sync()  -- flush the drawing
 print(g.getBounds())
@@ -50,7 +50,11 @@ print(g.getTextLength("hello", 1, 0))
 g.delChar("X"); print(g.freeChars()); g.clearChars()
 -- windows:
 local win = g.createWindow(x, y, w, h)
-local win3d = g.createWindow3D(x, y, w, h)  -- GPU3D OpenGL-like API (glBegin/glVertex/...)
+-- 3D windows expose a GPU3D OpenGL-like object (glBegin/glEnd/glVertex/glColor/
+-- glTexCoord/glTranslate/glScale/glRotate/glFrustum/glDirLight/glGenTextures/
+-- glBindTexture/glTexImage/render/clear/sync/getConstants/getBounds — jar-measured
+-- names; exact arities TBD in-game):
+local win3d = g.createWindow3D(x, y, w, h)
 ```
 
 VRAM is 16 MiB; a screen costs width*height*4 bytes. Failures: `Attached screen
@@ -71,8 +75,9 @@ k.setFireNativeEvents(true)
 Default (false): events are `tm_keyboard_key` / `tm_keyboard_key_up` /
 `tm_keyboard_char`, with the keyboard's attached name as first arg. With
 `setFireNativeEvents(true)` the raw CC `key` / `key_up` / `char` events fire
-instead. For wireless use, bind a portable-keyboard item to a keyboard-dongle
-block (`dongle_not_found` / `dongle_out_of_range` chat errors if unbound).
+instead (plus `paste` on paste). For wireless use, bind a portable-keyboard
+item to a keyboard-dongle block (`dongle_not_found` / `dongle_out_of_range`
+chat errors if unbound).
 
 ## Redstone (`tm_rsPort`)
 
