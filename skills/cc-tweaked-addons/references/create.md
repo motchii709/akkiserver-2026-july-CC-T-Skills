@@ -15,6 +15,10 @@ local summary = t.stock()  -- e.g. { { name="minecraft:oak_log", count=64 } }
 local full = t.stock(true)  -- with details (argument is Optional<Boolean>)
 local d = t.getStockItemDetail(1)  -- index into stock()
 t.requestFiltered("minecraft:oak_log", {name="minecraft:oak_log", count=64})
+-- address is REQUIRED and the call auto-fires as a RESTOCK broadcast
+-- (no separate request() step). Returns total matched item count.
+-- Each filter table supports _requestCount cap + _op any/all/not/type and
+-- glob/regex operators (deep-match per ComputerUtil); verify shapes in-game.
 ```
 
 - `stock()` returns an accurate rollup of actual stock (in-transit packages excluded).
@@ -27,16 +31,23 @@ local r = peripheral.find("Create_RedstoneRequester")
 r.setAddress("Generated")
 r.setRequest({name="minecraft:oak_log", count=64}, {name="minecraft:iron_ingot", count=32})
 r.request()
-r.setCraftingRequest({name="minecraft:oak_planks", count=16})  -- crafting order
-local cur = r.getRequest()
+r.setCraftingRequest(1, {name="minecraft:oak_planks", count=16})  -- crafting order
+-- NOTE: leading int count first, then item tables (jar-measured signature
+-- setCraftingRequest(count:int, ...items); the gameplay meaning of the leading
+-- count is unconfirmed — verify in-game before relying on it)
+local cur = r.getRequest()  -- 1-based keys; empty (air) slots omitted; {} = nothing staged
 print(r.getAddress(), r.getConfiguration())
--- To change it: read the current string with getConfiguration() first,
--- then pass a modified value back to setConfiguration().
+-- Configuration is exactly "allow_partial" or "strict" (anything else throws):
+-- r.setConfiguration("allow_partial")
 ```
 
-- **`setRequest` takes max 9 item types per call, each count<=256** (jar-measured).
+- **`setRequest` takes max 9 item types per call, each count <= 256** (jar-measured).
   Slice larger orders into repeated `setRequest` + `request()` calls.
+  Bare-string args mean count 1; missing args pad with air placeholders.
 - `getRequest()` shows the pending request before firing.
+- `request()` fires immediately from Lua — no redstone signal needed (the name
+  is historical). Strict mode (`"strict"`) aborts the whole request on any
+  shortfall; `"allow_partial"` ships what is available.
 
 ### `Create_Frogport` / `Create_Postbox` — addressed package ports
 
@@ -51,17 +62,22 @@ local d = f.getItemDetail(1)
 
 - Fires `package_received` / `package_sent` events (confirm exact strings in-game
   with an `os.pullEvent()` capture loop; the jar's event classes are named
-  `PackageEvent` / `RepackageEvent` / ...).
+  `PackageEvent` / `RepackageEvent` / ... and peripherals queue dynamic
+  status strings, not class names).
 - Postbox has the same shape
   (`setAddress/getAddress/getConfiguration/setConfiguration/list/getItemDetail`).
+- `setConfiguration` accepts only `"send_recieve" | "send"` (else LuaException)
+  and returns boolean.
 
 ### `Create_Packager` / `Create_Repackager` — packagers
 
 ```lua
 local pk = peripheral.find("Create_Packager")
 pk.setAddress("Generated")  -- Optional<String>, may be omitted
-local ok = pk.makePackage()  -- packs contents into a package, returns boolean
-local box = pk.getPackage()  -- PackageLuaObject
+local ok = pk.makePackage()  -- packs contents, returns boolean;
+  -- false means both "already holding a box" and "nothing to pack"
+local box = pk.getPackage()  -- PackageLuaObject, or nil when no package present
+assert(box, "no package — nothing packed?")
 print(box.getAddress())
 box.setAddress("Generated")
 local items = box.list()
@@ -80,7 +96,7 @@ end
 ```lua
 local s = peripheral.find("Create_Station")
 s.assemble()
--- s.disassemble()  -- use this one to disassemble
+-- s.disassemble()  -- disassemble
 s.setAssemblyMode(true); print(s.isInAssemblyMode())
 s.setStationName("depot"); print(s.getStationName())
 s.setTrainName("freight-1"); print(s.getTrainName())
@@ -143,8 +159,8 @@ print(g.isRunning())
 local st = peripheral.find("Create_Sticker")
 print(st.isExtended(), st.isAttachedToBlock())
 st.extend()
--- st.retract()  -- use this one to retract
--- st.toggle()   -- or toggle
+-- st.retract()  -- retract
+-- st.toggle()   -- toggle
 ```
 
 ## Display / gauges / shop
