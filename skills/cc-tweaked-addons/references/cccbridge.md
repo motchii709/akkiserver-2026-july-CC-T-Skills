@@ -7,6 +7,8 @@ Type strings and method names are jar-measured with javap; usage is backed by th
 
 ## `scroller` — number picker pane
 
+Attach modems to the back face. Transition takes ~1s (`none` is instant).
+
 ```lua
 local sc = peripheral.find("scroller")
 sc.setLock(true)  -- edit lock while changing values (see also: isLocked/setLock)
@@ -14,8 +16,9 @@ print(sc.isLocked())
 print(sc.getValue())  -- current value (-limit..limit)
 sc.setValue(32)
 print(sc.getLimit())
-sc.setLimit(64)  -- cap. With minus spectrum enabled: -limit..limit, else 0..limit
--- (toggle the minus spectrum with toggleMinusSpectrum below)
+sc.setLimit(64)  -- no jar-enforced max (32/64 is the doc-example convention;
+-- default range is -15..15. The range object mirrors (-limit..limit);
+-- effective range is 0..limit unless minus spectrum is on.
 print(sc.hasMinusSpectrum())
 sc.toggleMinusSpectrum(true)
 sc.setLock(false)
@@ -35,7 +38,10 @@ src.write("Hello World")
 print(src.getLine(math.floor(h/2)))  -- read back the written line (text only)
 src.setSize(51, 19)
 print(table.unpack(src.getContent()))
--- scroll(yDiff) / clearLine() / getCursorPos() work like term
+-- scroll(yDiff) / clearLine() / getCursorPos() work like term (all inherited
+-- from CC TermMethods; setTextColor/setBackgroundColor are ignored).
+-- Display sync is ~1s; a redstone clock on the Display Link forces faster
+-- updates; watch os.pullEvent("monitor_resize") on target-size change.
 ```
 
 ## `create_target` — mock display target
@@ -48,6 +54,9 @@ t.resize(32, 8)
 for _, line in ipairs(t.dump()) do print(line) end
 print(t.getLine(1))  -- e.g. read just the stress-value line
 print(table.unpack(t.getSize()))
+-- resize(w,h) throws if w/h < 1. No setWidth/clear in the 1.7.3 jar
+-- (old-wiki entries are stale). Update rate is source-driven; a redstone
+-- clock on the Display Link forces faster updates.
 ```
 
 ## `animatronic` — posable figure
@@ -70,12 +79,16 @@ local x2, y2, z2 = a.getAppliedHeadRot()
 ## `redrouter` — 6-sided redstone router
 
 For more sides than a computer offers.
-Side names (computer-relative) are `front/back/left/right/top/bottom` (jar-measured).
+Side names are `front/back/left/right/top/bottom`, interpreted relative to the
+RedRouter block's facing (turtle-style: jar `getActualSide` maps via block
+facing, per the official RedRouter doc).
 
 ```lua
 local r = peripheral.find("redrouter")
 r.setOutput("left", true)
 print(r.getOutput("left"), r.getInput("front"))
+-- getInput reads the world (possibly an external source); getOutput returns
+-- what you told it to emit.
 r.setAnalogOutput("back", 10)  -- 0..15, out of range throws LuaException
 print(r.getAnalogOutput("back"), r.getAnalogInput("back"))
 os.pullEvent("redstone")
