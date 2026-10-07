@@ -1,9 +1,9 @@
 # Other addons (jar-measured)
 
-## Create: Tweaked Controllers (`tweaked_controller`)
+## Create: Tweaked Controllers 1.21.1-1.2.7 (`tweaked_controller`)
 
 CC integration for the Tweaked Lectern Controller (joystick controller).
-Type is jar-measured `tweaked_controller`. Buttons [1,15], axes [1,6]
+Type is jar-measured `tweaked_controller`. Buttons 1–15, axes 1–6
 (out of range throws LuaException).
 
 ```lua
@@ -12,11 +12,13 @@ print(c.hasUser(), c.getUserUUID())
 print(c.getButton(1))  -- 1..15
 print(c.getAxis(1))  -- 1..6
 c.setFullPrecision(true); print(c.isFullPrecision())
--- wiki/doc-backed event names; confirm in-game with an os.pullEvent() capture loop
-local ev, using, player = os.pullEvent("controller_start_using")  -- / controller_stop_using
+-- jar-confirmed events fired on use start/stop:
+local ev, uuid = os.pullEvent("controller_start_using")  -- payload is one arg:
+-- the player UUID string (nil-able). Same for controller_stop_using.
+-- (Jar-confirmed in TweakedLecternPeripheral NotifyUseEvent bytecode.)
 ```
 
-## CC: Deep Seas (submarines)
+## CC: Deep Seas 1.1.1 (submarines)
 
 CC integration for three Create Submarine blocks. Types are jar-measured.
 
@@ -24,12 +26,15 @@ CC integration for three Create Submarine blocks. Types are jar-measured.
 -- oxygenator (= Hull Controller. Note the type name: not "hull")
 local h = peripheral.find("oxygenator")
 print(h.getCurrentSubLevelID())
-for _, comp in ipairs(h.getCompartments()) do print(comp.name or comp.id) end
+for _, comp in ipairs(h.getCompartments()) do print(textutils.serialise(comp)) end
+-- jar-confirmed keys include internal/hull/sealed/anchor (+ x/y/z pos);
+-- full key list unconfirmed until measured in-game
 
--- ballast_vent (has fluid tanks; generic inventory/fluid methods apply too)
+-- ballast_vent (fluid tanks via CC fluid generics: tanks/pushFluid/pullFluid;
+-- NO inventory methods)
 local b = peripheral.find("ballast_vent")
 print(b.tanks())
-b.pushFluid("left", 1000)  -- (side, amount, fluid name optional)
+b.pushFluid("left", 1000)  -- (targetName, limit?, fluidName?)
 b.pullFluid("left", 1000)
 print(b.isAnyHolesFaceSubmerged())
 
@@ -42,7 +47,7 @@ print(t.getAirflow(), t.getAirflowScaling(), t.getCurrentAirPressure())
 print(t.isActive())
 ```
 
-## CC: Sable (Lua API form)
+## CC: Sable 1.3.4 (Lua API form)
 
 Exposed as **Lua APIs** (`aero`/`aerodynamics`, `sublevel`), not peripherals.
 
@@ -63,6 +68,9 @@ print(sublevel.getVelocity(), sublevel.getLinearVelocity(), sublevel.getAngularV
 print(sublevel.getCenterOfMass())
 print(sublevel.getLogicalPose(), sublevel.getLastPose())
 print(sublevel.getInertiaTensor())
+print(sublevel.getInverseInertiaTensor())
+-- getVelocity() and isInPlotGrid() do not throw; every other sublevel.*
+-- throws 'This computer is not on a Sub-Level!' when the computer is off-sub.
 ```
 
 ## DebugBridge (not CC)
