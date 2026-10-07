@@ -13,7 +13,7 @@ community file with permission-compatible licensing (MIT on both sides).
 
 Modem, PlayerDetector, ChatBox, ReadStream/WriteStream, Inventory (generic
 `pushItems`/`pullItems`), TrainStation (`Create_Station`), Frogport
-(`Create_Frogport`, incl. `"send_recieve"\|"send"` config union), StockTicker
+(`Create_Frogport`, incl. `"send_recieve" | "send"` config union), StockTicker
 (`Create_StockTicker`), InventoryManager, ItemInterface, DisplayLink
 (`Create_DisplayLink`), ColonyIntegrator + ColonyCitizen/Visitor/Building/
 Research/Request/WorkOrder shapes, NixieTube + NixieTubeSignal, TrainSignal
