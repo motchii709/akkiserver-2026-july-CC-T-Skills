@@ -20,6 +20,7 @@ English version: [README.md](README.md).
 | ファイル | 内容 |
 |---|---|
 | [create.md](skills/cc-tweaked-addons/references/create.md) | Create 6.0.10 内蔵18種 (StockTicker/Requester/Frogport…)。物流の要 |
+| [setup.md](skills/cc-tweaked-addons/references/setup.md) | 物理セットアップ (配線/無線/モニター/タートル/チャンク読み込み) |
 | [cccbridge.md](skills/cc-tweaked-addons/references/cccbridge.md) | CC:C Bridge 1.7.3 の5種 (scroller/source/target/animatronic/redrouter) |
 | [advanced-peripherals.md](skills/cc-tweaked-addons/references/advanced-peripherals.md) | Advanced Peripherals 0.7.62b (chat_box/player_detector/…/colony_integrator) |
 | [toms.md](skills/cc-tweaked-addons/references/toms.md) | Tom's Peripherals 1.3.1 (GPU/キーボード/多面レッドストーン/ウォッチドッグ) |
