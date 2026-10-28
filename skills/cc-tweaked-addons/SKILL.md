@@ -1,6 +1,7 @@
 ---
 name: cc-tweaked-addons
 description: Operation guide for ComputerCraft: Tweaked and its addon mods on Minecraft 1.21.1/NeoForge. Covers peripheral types and Lua methods for Create built-ins, CC:C Bridge, Advanced Peripherals, Tom's Peripherals, Tweaked Controllers, Deep Seas, and Sable. Read when writing in-game Lua, operating peripherals, or building logistics orders.
+license: MIT
 ---
 
 # cc-tweaked-addons — ComputerCraft: Tweaked + Addons
