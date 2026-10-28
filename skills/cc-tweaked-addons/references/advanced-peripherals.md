@@ -99,11 +99,11 @@ local r = g.scan(8)  -- async MethodResult for radius 8, result arrives as event
 local c = g.chunkAnalyze()
 ```
 
-## `inventory_manager` (owner is bound to the placer)
+## `inventory_manager` (bind owner via memory card)
 
 WARNING: anyone who can use this computer can read, add, and remove the
 owner's inventory, armor, and hand items. Never attach it to a public computer;
-break and replace the block to rebind the owner.
+insert a new memory card with registered player data to rebind the owner.
 
 ```lua
 local m = peripheral.find("inventory_manager")
