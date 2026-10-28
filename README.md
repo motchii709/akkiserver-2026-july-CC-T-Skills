@@ -19,6 +19,7 @@ References under `cc-tweaked-addons`:
 | File | Contents |
 |---|---|
 | [create.md](skills/cc-tweaked-addons/references/create.md) | 18 Create 6.0.10 built-ins (StockTicker/Requester/Frogport…). The logistics core |
+| [setup.md](skills/cc-tweaked-addons/references/setup.md) | Physical setup: wiring, wireless, monitors, turtles, chunk loading |
 | [cccbridge.md](skills/cc-tweaked-addons/references/cccbridge.md) | 5 CC:C Bridge 1.7.3 types (scroller/source/target/animatronic/redrouter) |
 | [advanced-peripherals.md](skills/cc-tweaked-addons/references/advanced-peripherals.md) | Advanced Peripherals 0.7.62b (chat_box/player_detector/…/colony_integrator) |
 | [toms.md](skills/cc-tweaked-addons/references/toms.md) | Tom's Peripherals 1.3.1 (GPU/keyboard/multi-sided redstone/watchdog) |
