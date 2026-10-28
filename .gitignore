@@ -1,0 +1,15 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Mod jars (measured locally, not distributed with this repo)
+*.jar
+
+# World / save data
+saves/
+world/
+
+# Logs
+*.log
